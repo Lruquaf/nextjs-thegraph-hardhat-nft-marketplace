@@ -1,0 +1,37 @@
+.links {
+    background-color: #4542d2;
+    color: #153456;
+    font-size: 20px;
+    margin: 0 100px; /* Adjusted margin */
+    padding: 10px 15px; /* Added padding */
+    border-radius: 5px; /* Added border radius for a nicer look */
+    text-decoration: none; /* Added to remove default link underline */
+}
+
+.links:hover {
+    color: #3434ff;
+    background-color: #18343d;
+}
+
+.title {
+    margin-left: 20px; /* Adjusted margin */
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Changed to space-between */
+    align-items: center;
+    background-color: #333493;
+    height: 100px;
+    padding: 0 20px; /* Added padding */
+}
+
+.connectDiv {
+    margin-right: 20px; /* Adjusted margin */
+}
+
+.linksDiv {
+    justify-content: space-around; /* Changed to space-around */
+    align-items: center;
+    display: flex;
+}
