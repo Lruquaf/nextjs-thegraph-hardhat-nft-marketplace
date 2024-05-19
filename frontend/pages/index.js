@@ -5,6 +5,7 @@ import NFTBox from "../components/NFTBox"
 import {useChainId, useContract} from "@thirdweb-dev/react"
 import CONTRACT_ADDRESSES from "../constants/addresses"
 import NftMarketplace from "../constants/NftMarketplace.json"
+import {useEffect} from "react"
 
 export default function Home() {
     // const chainId = useChainId()
@@ -13,18 +14,31 @@ export default function Home() {
     //         ? CONTRACT_ADDRESSES[chainId].NftMarketplace
     //         : undefined
     // const marketplaceAbi = NftMarketplace
-    const {loading, error, data: listedNFTs} = useQuery(GET_ACTIVE_ITEMS)
+    const {
+        loading,
+        error,
+        data: listedNFTs,
+        refetch,
+    } = useQuery(GET_ACTIVE_ITEMS)
 
     // const {marketplaceContract} = useContract(marketplaceAddress)
     // console.log("Address: ", marketplaceAddress)
     // console.log("Abi: ", marketplaceAbi)
     // console.log("CContract index: ", marketplaceContract)
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            refetch()
+        }, 20000)
+
+        return () => clearInterval(interval)
+    }, [refetch])
+
     return (
         <main className={styles.main}>
             <div className={styles.container}>
                 <h1 className={styles.pageTitle}>Recently Listed</h1>
-                <div>
+                <div className={styles.listedNfts}>
                     {loading ? (
                         <div>Loading...</div>
                     ) : (

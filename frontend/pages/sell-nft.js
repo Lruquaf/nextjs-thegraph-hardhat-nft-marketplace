@@ -1,17 +1,20 @@
 import {useEffect, useState} from "react"
+import styles from "../styles/SellNft.module.css"
 import {
     useContract,
     useChainId,
     useContractWrite,
+    useContractRead,
     ConnectWallet,
+    Web3Button,
+    useAddress,
 } from "@thirdweb-dev/react"
 import CONTRACT_ADDRESSES from "../constants/addresses"
-// import {nftMarketplaceAbi} from "../constants/NftMarketplace.json"
-// import medievalGeneralsAbi from "../constants/MedievalGenerals.json"
 import {ethers} from "ethers"
+import {notifyAction} from "../components/Notification"
 
 export default function SellNFT() {
-    // const [nftContractAbi, setNftContractAbi] = useState(null)
+    const connectedAddress = useAddress()
 
     const [formData, setFormData] = useState({
         nftAddress: "",
@@ -31,22 +34,17 @@ export default function SellNFT() {
 
     const [nftContractAddress, setNftContractAddress] = useState("")
 
-    const {contract: marketplaceContract, error: marketplaceContractError} =
-        useContract(marketplaceAddress)
     const {contract: nftContract, error: nftContractError} =
         useContract(nftContractAddress)
 
     const {
-        mutateAsync: setApprovalForAll,
-        isLoading: approvalIsLoading,
-        error: approvalError,
-    } = useContractWrite(nftContract, "setApprovalForAll")
-
-    const {
-        mutateAsync: listItem,
-        isLoading: listItemIsLoading,
-        error: listItemError,
-    } = useContractWrite(marketplaceContract, "listItem")
+        data: isApprovedForAll,
+        isLoading: approvedForAllIsLoading,
+        error: approvedForAllError,
+    } = useContractRead(nftContract, "isApprovedForAll", [
+        connectedAddress,
+        marketplaceAddress,
+    ])
 
     useEffect(() => {}, [nftContractAddress])
 
@@ -57,21 +55,6 @@ export default function SellNFT() {
             [name]: value,
         })
     }
-
-    // async function getABI(nftAddress) {
-    //     try {
-    //         // Etherscan API'sinden ABI'yi al
-    //         const apiKey = process.env.ETHERSCAN_API_KEY
-    //         const response = await fetch(
-    //             `https://api-sepolia.etherscan.io/api?module=contract&action=getabi&address=${nftAddress}&apikey=${apiKey}`
-    //         )
-    //         const data = await response.json()
-    //         const fetchedABI = JSON.parse(data.result)
-    //         setNftContractAbi(fetchedABI)
-    //     } catch (error) {
-    //         console.error("Error fetching ABI:", error)
-    //     }
-    // }
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -89,106 +72,167 @@ export default function SellNFT() {
 
         setNftContractAddress(nftAddress)
 
-        // await getABI(nftAddress)
-
         setIsSubmitted(true)
     }
 
-    async function handleApprove() {
-        // Approve
-        console.log("Approving...")
-        const approvalArgs = [marketplaceAddress, true]
-        console.log("NFT Address: ", nftContractAddress)
-        console.log("NFT Contract: ", nftContract)
-        console.log("Approval Args: ", approvalArgs)
-        await setApprovalForAll({args: approvalArgs})
-        console.log("Approved!")
-        setIsApproved(true)
-    }
-    async function handleList() {
-        const nftAddress = formData.nftAddress
-        const tokenId = formData.tokenId
-        const price = formData.price
-        // List
-        console.log("Listing...")
-        const listingArgs = [
-            nftAddress,
-            tokenId,
-            ethers.utils.parseEther(price.toString()),
-        ]
-        await listItem({args: listingArgs})
-        console.log("Listed!")
-
-        setFormData({
-            nftAddress: "",
-            tokenId: "",
-            price: "",
-        })
-
-        setIsSubmitted(false)
-        setIsApproved(false)
+    const handleAction = (message, type) => {
+        notifyAction(message, type)
     }
 
     return (
-        <div>
-            <h2>Sell Your NFT</h2>
-            {chainId !== undefined ? (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="nftAddress">NFT Address: </label>
-                        <input
-                            type="text"
-                            id="nftAddress"
-                            name="nftAddress"
-                            value={formData.nftAddress}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="tokenId">Token Id: </label>
-                        <input
-                            type="text"
-                            id="tokenId"
-                            name="tokenId"
-                            value={formData.tokenId}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="price">Price in ETH: </label>
-                        <input
-                            type="number"
-                            id="price"
-                            name="price"
-                            value={formData.price}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <button type="submit" hidden={isSubmitted || isApproved}>
-                        Sell NFT
-                    </button>
-                </form>
-            ) : (
-                <div>
-                    Please Connect Your Wallet
-                    <ConnectWallet />
-                </div>
-            )}
-
-            {isSubmitted &&
-                (isApproved ? (
-                    <div>
-                        <button type="button" onClick={handleList}>
-                            List
+        <div className={styles.sellNftContainer}>
+            <div className={styles.formContainer}>
+                <h2 className={styles.formTitle}>Sell Your NFT</h2>
+                {chainId !== undefined ? (
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor="nftAddress">NFT Address: </label>
+                            <input
+                                type="text"
+                                id="nftAddress"
+                                name="nftAddress"
+                                value={formData.nftAddress}
+                                onChange={handleChange}
+                                className={styles.inputField}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="tokenId">Token Id: </label>
+                            <input
+                                type="text"
+                                id="tokenId"
+                                name="tokenId"
+                                value={formData.tokenId}
+                                onChange={handleChange}
+                                className={styles.inputField}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="price">Price in ETH: </label>
+                            <input
+                                type="number"
+                                id="price"
+                                name="price"
+                                value={formData.price}
+                                onChange={handleChange}
+                                className={styles.inputField}
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            hidden={isSubmitted || isApproved}
+                            className={styles.submitButton}
+                        >
+                            Sell NFT
                         </button>
-                    </div>
+                    </form>
                 ) : (
                     <div>
-                        <button type="button" onClick={handleApprove}>
-                            Approve
-                        </button>
+                        Please Connect Your Wallet
+                        <ConnectWallet />
                     </div>
-                ))}
+                )}
+
+                {isSubmitted &&
+                    (isApprovedForAll ? (
+                        <div>
+                            <Web3Button
+                                contractAddress={marketplaceAddress}
+                                action={async (contract) => {
+                                    const nftAddress = formData.nftAddress
+                                    const tokenId = formData.tokenId
+                                    const price = formData.price
+                                    // List
+                                    console.log("Listing...")
+                                    const args = [
+                                        nftAddress,
+                                        tokenId,
+                                        ethers.utils.parseEther(
+                                            price.toString()
+                                        ),
+                                    ]
+                                    console.log("Args: ", args)
+                                    console.log(
+                                        "Marketplace Address: ",
+                                        marketplaceAddress
+                                    )
+                                    await contract.call("listItem", args)
+                                    setFormData({
+                                        nftAddress: "",
+                                        tokenId: "",
+                                        price: "",
+                                    })
+                                    setIsSubmitted(false)
+                                    setIsApproved(false)
+                                }}
+                                isDisabled={
+                                    isApprovedForAll ? false : !isApproved
+                                }
+                                onSuccess={() => {
+                                    console.log(
+                                        "Here comes a success notification"
+                                    )
+                                    handleAction(
+                                        "Transaction Submitted!",
+                                        "success"
+                                    )
+                                }}
+                                onError={(error) => {
+                                    console.log(
+                                        "Here comes an error notification: ",
+                                        error
+                                    )
+                                    handleAction("Transaction Failed!", "error")
+                                }}
+                                className={styles.submitButton}
+                            >
+                                List
+                            </Web3Button>
+                        </div>
+                    ) : (
+                        <div>
+                            <Web3Button
+                                contractAddress={nftContractAddress}
+                                action={async (contract) => {
+                                    console.log("Approving...")
+                                    const args = [marketplaceAddress, true]
+                                    console.log(
+                                        "NFT Address: ",
+                                        nftContractAddress
+                                    )
+                                    console.log("NFT Contract: ", nftContract)
+                                    console.log("Approval Args: ", args)
+                                    await contract.call(
+                                        "setApprovalForAll",
+                                        args
+                                    )
+                                    console.log("Approved!")
+                                    setIsApproved(true)
+                                }}
+                                isDisabled={!isSubmitted && isApproved}
+                                onSuccess={() => {
+                                    console.log(
+                                        "Here comes a success notification"
+                                    )
+                                    handleAction(
+                                        "Transaction Submitted!",
+                                        "success"
+                                    )
+                                }}
+                                onError={(error) => {
+                                    console.log(
+                                        "Here comes an error notification: ",
+                                        error
+                                    )
+                                    handleAction("Transaction Failed!", "error")
+                                }}
+                                className={styles.submitButton}
+                            >
+                                Approve
+                            </Web3Button>
+                        </div>
+                    ))}
+            </div>
         </div>
     )
 }

@@ -15,6 +15,7 @@ export const notifyAction = (message, type) => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
+            style: {backgroundColor: "green", color: "white"},
         })
     } else if (type === "error") {
         toast.error(message, {
@@ -25,6 +26,7 @@ export const notifyAction = (message, type) => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
+            style: {backgroundColor: "red", color: "white"},
         })
     }
 }

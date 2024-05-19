@@ -1,13 +1,11 @@
-import {useEffect, useState} from "react"
+import {useState} from "react"
 import styles from "../styles/Modal.module.css"
-import {Web3Button, useChainId, useContract} from "@thirdweb-dev/react"
+import {Web3Button, useChainId} from "@thirdweb-dev/react"
 import CONTRACT_ADDRESSES from "../constants/addresses"
-import NftMarketplace from "../constants/NftMarketplace.json"
 import {ethers} from "ethers"
 import {notifyAction} from "./Notification"
 
 export default function NFTModal({
-    marketplace,
     onClose,
     isOwnedByUser,
     tokenId,
@@ -19,10 +17,8 @@ export default function NFTModal({
         CONTRACT_ADDRESSES[chainId] !== undefined
             ? CONTRACT_ADDRESSES[chainId].NftMarketplace
             : undefined
-    const marketplaceAbi = NftMarketplace
 
     const [newPrice, setNewPrice] = useState("")
-    // const {contract: marketplace} = useContract(marketplaceAddress)
 
     const handleAction = (message, type) => {
         notifyAction(message, type)
@@ -31,7 +27,9 @@ export default function NFTModal({
     return (
         <div className={styles.overlay}>
             <div className={styles.modal}>
-                <button onClick={onClose}>Close</button>
+                <button onClick={onClose} className={styles.button}>
+                    Close
+                </button>
                 <p>Token Address: {nftAddress}</p>
                 <p>TokenId: {tokenId}</p>
                 {isOwnedByUser ? (
@@ -40,14 +38,12 @@ export default function NFTModal({
                             type="number"
                             name="Price"
                             value={newPrice}
-                            defaultValue={0.0}
                             onChange={(e) => setNewPrice(e.target.value)}
                         />{" "}
                         ETH
                         <div className={styles.sellerOptions}>
                             <Web3Button
                                 contractAddress={marketplaceAddress}
-                                // contractAbi={marketplaceAbi}
                                 action={async (contract) => {
                                     const args = [
                                         nftAddress,
@@ -58,15 +54,7 @@ export default function NFTModal({
                                     ]
                                     await contract.call("updateListing", args)
                                 }}
-                                // onSubmit={() => {
-                                //     console.log(
-                                //         "Here comes a submit notification"
-                                //     )
-                                // }}
                                 onSuccess={() => {
-                                    console.log(
-                                        "Here comes a success notification"
-                                    )
                                     handleAction(
                                         "Transaction Submitted!",
                                         "success"
@@ -74,10 +62,6 @@ export default function NFTModal({
                                     onClose()
                                 }}
                                 onError={(error) => {
-                                    console.log(
-                                        "Here comes an error notification: ",
-                                        error
-                                    )
                                     handleAction("Transaction Failed!", "error")
                                 }}
                             >
@@ -85,20 +69,11 @@ export default function NFTModal({
                             </Web3Button>
                             <Web3Button
                                 contractAddress={marketplaceAddress}
-                                // contractAbi={marketplaceAbi}
                                 action={async (contract) => {
                                     const args = [nftAddress, tokenId]
                                     await contract.call("cancelListing", args)
                                 }}
-                                // onSubmit={() => {
-                                //     console.log(
-                                //         "Here comes a submit notification"
-                                //     )
-                                // }}
                                 onSuccess={() => {
-                                    console.log(
-                                        "Here comes a success notification"
-                                    )
                                     handleAction(
                                         "Transaction Submitted!",
                                         "success"
@@ -106,10 +81,6 @@ export default function NFTModal({
                                     onClose()
                                 }}
                                 onError={(error) => {
-                                    console.log(
-                                        "Here comes an error notification: ",
-                                        error
-                                    )
                                     handleAction("Transaction Failed!", "error")
                                 }}
                             >
@@ -120,13 +91,18 @@ export default function NFTModal({
                 ) : (
                     <Web3Button
                         contractAddress={marketplaceAddress}
-                        // contractAbi={marketplaceAbi}
                         action={async (contract) => {
                             const args = [nftAddress, tokenId]
-                            console.log("Args: ", args)
                             await contract.call("buyItem", args, {
                                 value: price.toString(),
                             })
+                        }}
+                        onSuccess={() => {
+                            handleAction("Transaction Submitted!", "success")
+                            onClose()
+                        }}
+                        onError={(error) => {
+                            handleAction("Transaction Failed!", "error")
                         }}
                     >
                         Buy NFT

@@ -1,37 +1,104 @@
-.links {
-    background-color: #4542d2;
-    color: #153456;
-    font-size: 20px;
-    margin: 0 100px; /* Adjusted margin */
-    padding: 10px 15px; /* Added padding */
-    border-radius: 5px; /* Added border radius for a nicer look */
-    text-decoration: none; /* Added to remove default link underline */
-}
-
-.links:hover {
-    color: #3434ff;
-    background-color: #18343d;
-}
-
-.title {
-    margin-left: 20px; /* Adjusted margin */
-}
-
-.navbar {
+/* styles.module.css */
+.main {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #0a0a23; /* Dark navy blue background */
+    min-height: 100vh; /* Full viewport height */
     display: flex;
-    justify-content: space-between; /* Changed to space-between */
     align-items: center;
-    background-color: #333493;
-    height: 100px;
-    padding: 0 20px; /* Added padding */
+    justify-content: center;
 }
 
-.connectDiv {
-    margin-right: 20px; /* Adjusted margin */
-}
-
-.linksDiv {
-    justify-content: space-around; /* Changed to space-around */
-    align-items: center;
+.container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px; /* Maximum width for container */
+    background-color: #1a1a40; /* Darker navy blue */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.pageTitle {
+    font-size: 36px;
+    font-weight: bold;
+    color: #1e90ff; /* Dodger blue title color */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.listedNfts {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(225px, 1fr)
+    ); /* Smaller columns */
+    gap: 20px; /* Gap between grid items */
+    width: 100%; /* Full width of container */
+}
+
+.nftBoxContainer {
+    background-color: #203568; /* Darker blue */
+    padding: 8px; /* Reduced padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content vertically */
+    text-align: center; /* Center content horizontally */
+    transition: transform 0.3s;
+    cursor: pointer;
+    max-width: 300px;
+}
+
+.nftBoxContainer:hover {
+    transform: scale(1.02); /* Slightly enlarge on hover */
+}
+
+.nftBoxContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.nftBoxImage {
+    margin-bottom: 5px; /* Adjust margin for spacing */
+    width: 200px; /* Set width for image */
+    height: 200px; /* Set height for image */
+}
+
+.nftBoxTitle {
+    font-size: 18px; /* Smaller font size */
+    font-weight: bold;
+    color: #ffffff; /* White text */
+    margin-bottom: 3px; /* Smaller margin */
+}
+
+.nftBoxDescription {
+    font-size: 14px; /* Smaller font size */
+    color: #d1d1e0; /* Light grey text */
+    margin-bottom: 3px; /* Smaller margin */
+}
+
+.nftBoxInfo {
+    font-size: 12px; /* Smaller font size */
+    color: #b0b0cf; /* Lighter grey text */
+    margin-bottom: 3px; /* Smaller margin */
+}
+
+.nftBoxPrice {
+    font-size: 16px; /* Smaller font size */
+    font-weight: bold;
+    color: #1e90ff; /* Dodger blue price color */
+    margin-bottom: 3px; /* Smaller margin */
+}
+
+.nftBoxOwner {
+    font-size: 12px; /* Smaller font size */
+    color: #a0a0c0; /* Light grey text */
+    margin-bottom: 3px; /* Smaller margin */
 }

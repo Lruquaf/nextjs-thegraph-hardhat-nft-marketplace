@@ -1,6 +1,6 @@
 import {ConnectWallet} from "@thirdweb-dev/react"
 import Link from "next/link"
-import styles from "../styles/Home.module.css"
+import styles from "../styles/Header.module.css"
 
 export default function Header() {
     return (
@@ -9,6 +9,9 @@ export default function Header() {
             <div className={styles.linksDiv}>
                 <Link href="/" className={styles.links}>
                     Home
+                </Link>
+                <Link href="/dashboard" className={styles.links}>
+                    Dashboard
                 </Link>
                 <Link href="/sell-nft" className={styles.links}>
                     Sell NFT

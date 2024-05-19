@@ -1,0 +1,41 @@
+.links {
+    background-color: #4542d2;
+    color: #153456;
+    font-size: 20px;
+    margin: 0 50px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.links:hover {
+    color: #3434ff;
+    background-color: #18343d;
+}
+
+.title {
+    margin-left: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333493;
+    height: 100px;
+    padding: 0 20px;
+}
+
+.connectDiv {
+    margin-right: 20px;
+}
+
+.linksDiv {
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    margin: 10px;
+}

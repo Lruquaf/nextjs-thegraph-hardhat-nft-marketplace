@@ -1,6 +1,7 @@
 import {ThirdwebProvider} from "@thirdweb-dev/react"
 import "../styles/globals.css"
 import Header from "../components/Header"
+import Notification from "../components/Notification"
 import {ApolloProvider, ApolloClient, InMemoryCache} from "@apollo/client"
 import {Sepolia} from "@thirdweb-dev/chains"
 
@@ -22,6 +23,7 @@ function MyApp({Component, pageProps}) {
         >
             <ApolloProvider client={client}>
                 <div>
+                    <Notification />
                     <Header />
                     <Component {...pageProps} />
                 </div>

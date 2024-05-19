@@ -10,30 +10,20 @@ import {
     ConnectWallet,
 } from "@thirdweb-dev/react"
 
-import styles from "../styles/Modal.module.css"
-
-import {CONTRACT_ABI} from "../constants/MedievalGenerals.json"
+import styles from "../styles/Home.module.css"
 import {ethers} from "ethers"
 import NFTModal from "./NFTModal"
 
-export default function NFTBox({
-    // marketplace,
-    seller,
-    nftAddress,
-    tokenId,
-    price,
-}) {
+export default function NFTBox({seller, nftAddress, tokenId, price}) {
     const status = useConnectionStatus()
     const rawAddress = useAddress()
     const address =
         rawAddress !== undefined ? rawAddress.toLowerCase() : rawAddress
-
     const chainId = useChainId()
 
     const [imageUri, setImageUri] = useState("")
     const [tokenName, setTokenName] = useState("")
     const [tokenDescription, setTokenDescription] = useState("")
-
     const [showModal, setShowModal] = useState(false)
     const hideModal = () => setShowModal(false)
 
@@ -59,7 +49,6 @@ export default function NFTBox({
                 "https://ipfs.io/ipfs/"
             )
             const tokenUriResponse = await (await fetch(requestURL)).json()
-
             setImageUri(tokenUriResponse.image)
             setTokenName(tokenUriResponse.name)
             setTokenDescription(tokenUriResponse.description)
@@ -70,7 +59,7 @@ export default function NFTBox({
         if (status === "connected" && contract !== undefined) {
             updateUI()
         }
-    }, [contract, status, nftUri, price])
+    }, [contract, status, nftUri])
 
     const handleCardClick = () => {
         setShowModal(true)
@@ -79,39 +68,34 @@ export default function NFTBox({
     return (
         <div>
             <div>
+                {showModal && (
+                    <NFTModal
+                        isOwnedByUser={isOwnedByUser}
+                        tokenId={tokenId}
+                        nftAddress={nftAddress}
+                        price={price}
+                        onClose={hideModal}
+                    />
+                )}
+            </div>
+            <div className={styles.nftBoxContainer} onClick={handleCardClick}>
                 {!(chainId === undefined) ? (
                     imageUri || !isNftUriLoading ? (
                         <div>
-                            {showModal && (
-                                <div>
-                                    {
-                                        <NFTModal
-                                            // marketplace={marketplace}
-                                            isOwnedByUser={isOwnedByUser}
-                                            tokenId={tokenId}
-                                            nftAddress={nftAddress}
-                                            price={price}
-                                            onClose={hideModal}
-                                        />
-                                    }
-                                </div>
-                            )}
-                            <div onClick={handleCardClick}>
-                                <div>
-                                    <MediaRenderer
-                                        src={imageUri}
-                                        width="250px"
-                                        height="250px"
-                                    />
-                                </div>
-                                <h2>{tokenName}</h2>
-                                <p>{tokenDescription}</p>
-                                <p>
-                                    {tokenId} of {truncatedAddress(nftAddress)}
-                                </p>
-                                <h3>{ethers.utils.formatEther(price)} ETH</h3>
-                                <p>owned by {formattedSellerAddress}</p>
+                            <div className={styles.nftImage}>
+                                <MediaRenderer
+                                    src={imageUri}
+                                    width="200px"
+                                    height="200px"
+                                />
                             </div>
+                            <h2>{tokenName}</h2>
+                            <p>{tokenDescription}</p>
+                            <p>
+                                {tokenId} of {truncatedAddress(nftAddress)}
+                            </p>
+                            <h3>{ethers.utils.formatEther(price)} ETH</h3>
+                            <p>owned by {formattedSellerAddress}</p>
                         </div>
                     ) : (
                         <div>Loading...</div>

@@ -1,0 +1,48 @@
+/* SellNft.module.css */
+.sellNftContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    background-color: #0a0a23; /* Dark navy blue background */
+    padding-top: 50px;
+}
+
+.formContainer {
+    background-color: #1a1a40; /* Darker navy blue */
+    color: #ffffff; /* White text color */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.formTitle {
+    color: #1e90ff; /* Dodger blue title color */
+    margin-bottom: 20px;
+}
+
+.inputField {
+    background-color: #0a0a23; /* Dark navy blue */
+    color: #ffffff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.submitButton {
+    background-color: #1e90ff; /* Dodger blue button */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+    background-color: #4682b4; /* Steel blue on hover */
+}
