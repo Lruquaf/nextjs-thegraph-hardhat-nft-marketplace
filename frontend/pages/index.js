@@ -1,6 +1,6 @@
 import styles from "../styles/Home.module.css"
 import {useQuery} from "@apollo/client"
-import GET_ACTIVE_ITEMS from "../constants/graphQueries"
+import graphQueries from "../constants/graphQueries"
 import NFTBox from "../components/NFTBox"
 import {useChainId, useContract} from "@thirdweb-dev/react"
 import CONTRACT_ADDRESSES from "../constants/addresses"
@@ -19,7 +19,7 @@ export default function Home() {
         error,
         data: listedNFTs,
         refetch,
-    } = useQuery(GET_ACTIVE_ITEMS)
+    } = useQuery(graphQueries.GET_ACTIVE_ITEMS)
 
     // const {marketplaceContract} = useContract(marketplaceAddress)
     // console.log("Address: ", marketplaceAddress)

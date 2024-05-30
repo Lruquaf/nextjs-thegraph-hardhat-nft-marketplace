@@ -3,45 +3,72 @@
     justify-content: center;
     align-items: flex-start;
     height: 100vh;
-    background-color: #0a0a23; /* Dark navy blue background */
+    background-color: #0a0a23;
     padding-top: 50px;
 }
 
 .dashboardContainer {
-    background-color: #1a1a40; /* Darker navy blue */
-    color: #ffffff; /* White text color */
+    background-color: #1a1a40;
+    color: #ffffff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 600px;
+    max-width: 1000px;
     text-align: center;
 }
 
 .dashboardTitle {
-    color: #1e90ff; /* Dodger blue title color */
+    color: #1e90ff;
     margin-bottom: 20px;
 }
 
+.toggleButtons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.toggleButton {
+    background-color: #1e90ff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggleButton:hover {
+    background-color: #4682b4;
+}
+
+.activeButton {
+    background-color: #4682b4;
+}
+
 .proceedsContainer {
-    background-color: #0a0a23; /* Dark navy blue */
+    background-color: #0a0a23;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-top: 20px;
+    width: 50%;
+    margin: 0 auto;
 }
 
 .balanceText {
-    color: #87cefa; /* Light sky blue */
+    color: #87cefa;
     margin-bottom: 10px;
 }
 
 .loadingText {
-    color: #87cefa; /* Light sky blue */
+    color: #87cefa;
 }
 
 .web3Button {
-    background-color: #1e90ff; /* Dodger blue button */
+    background-color: #1e90ff;
     color: #ffffff;
     border: none;
     padding: 10px 20px;
@@ -51,5 +78,20 @@
 }
 
 .web3Button:hover {
-    background-color: #4682b4; /* Steel blue on hover */
+    background-color: #4682b4;
+}
+
+.listingsContainer {
+    background-color: #0a0a23;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+.listedNfts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
 }
